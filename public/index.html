@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Inventario de Productos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; padding: 40px; color: #333; }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 30px; }
+        
+        .contenedor { max-width: 1000px; margin: 0 auto; }
+        
+        .formulario-contenedor { background: white; padding: 25px; border-radius: 8px; margin-bottom: 30px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+        .formulario-titulo { font-size: 18px; font-weight: bold; color: #2c3e50; margin-bottom: 15px; }
+        
+        .usuario-barra {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+#estadoUsuario {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#mensaje {
+    position: sticky;
+    top: 10px;
+    z-index: 1000;
+}
+
+.mensaje {
+    margin-bottom: 20px;
+}
+
+.btn-logout {
+    background-color: #e74c3c;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-logout:hover {
+    background-color: #c0392b;
+}
+
+        .form-grupo { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        label { display: block; font-size: 12px; text-transform: uppercase; color: #666; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        input:focus { outline: none; border-color: #3498db; box-shadow: 0 0 5px rgba(52, 152, 219, 0.3); }
+        
+        .btn-grupo { display: flex; gap: 10px; }
+        button { padding: 12px 20px; font-size: 14px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.3s; }
+        .btn-agregar { background-color: #27ae60; color: white; flex: 1; }
+        .btn-agregar:hover { background-color: #229954; }
+        
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #3498db; color: white; text-transform: uppercase; letter-spacing: 1px; }
+        tr:hover { background-color: #f1f1f1; }
+        .precio { font-weight: bold; color: #27ae60; }
+        
+        .acciones { display: flex; gap: 8px; }
+        .btn-editar, .btn-eliminar { padding: 6px 12px; font-size: 12px; border: none; border-radius: 4px; cursor: pointer; color: white; }
+        .btn-editar { background-color: #3498db; }
+        .btn-editar:hover { background-color: #2980b9; }
+        .btn-eliminar { background-color: #e74c3c; }
+        .btn-eliminar:hover { background-color: #c0392b; }
+        
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal.activo { display: flex; align-items: center; justify-content: center; }
+        .modal-contenido { background-color: white; padding: 30px; border-radius: 8px; width: 90%; max-width: 500px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .modal-titulo { font-size: 20px; font-weight: bold; color: #2c3e50; margin-bottom: 20px; }
+        .modal-botones { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-guardar { background-color: #27ae60; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; flex: 1; }
+        .btn-guardar:hover { background-color: #229954; }
+        .btn-cancelar { background-color: #95a5a6; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; flex: 1; }
+        .btn-cancelar:hover { background-color: #7f8c8d; }
+        
+        .mensaje { padding: 15px; border-radius: 4px; margin-bottom: 15px; text-align: center; }
+        .mensaje.exito { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .mensaje.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <h1>🛒 Inventario de Almacén</h1>
+
+        <div id="mensaje"></div>
+        
+        <div class="usuario-barra">
+    <div id="estadoUsuario"></div>
+    <button id="btnLogout" class="btn-logout" onclick="logout()">Cerrar sesión</button>
+</div>
+
+        <div class="formulario-contenedor">
+        <div class="formulario-titulo">👤 Registro de Usuario</div>
+        <div class="form-grupo">
+        <div>
+            <label>Email</label>
+            <input type="email" id="userEmail" placeholder="Ej: test@email.com">
+        </div>
+        <div>
+            <label>Contraseña</label>
+            <input type="password" id="userPassword" placeholder="******">
+        </div>
+    </div>
+    <div class="btn-grupo">
+        <button class="btn-agregar" onclick="registrarUsuario()">Registrarse</button>
+    </div>
+</div>
+
+<div class="formulario-contenedor">
+    <div class="formulario-titulo">🔐 Iniciar Sesión</div>
+    <div class="form-grupo">
+        <div>
+            <label>Email</label>
+            <input type="email" id="loginEmail">
+        </div>
+        <div>
+            <label>Contraseña</label>
+            <input type="password" id="loginPassword">
+        </div>
+    </div>
+    <div class="btn-grupo">
+        <button class="btn-agregar" onclick="login()">Ingresar</button>
+    </div>
+</div>
+
+        <div class="formulario-contenedor">
+            <div class="formulario-titulo">➕ Agregar Nuevo Producto</div>
+            <div class="form-grupo">
+                <div>
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="nombre" placeholder="Ej: Arroz 1kg">
+                </div>
+                <div>
+                    <label>Stock (unidades)</label>
+                    <input type="number" id="stock" placeholder="50" min="0">
+                </div>
+                <div>
+                    <label>Precio ($)</label>
+                    <input type="number" id="precio" placeholder="1200" min="0">
+                </div>
+            </div>
+            <div class="btn-grupo">
+                <button class="btn-agregar" onclick="agregarProducto()">Agregar Producto</button>
+            </div>
+        </div>
+
+        <div class="formulario-contenedor">
+    <div class="formulario-titulo">🔍 Buscar Producto</div>
+    <div class="form-grupo">
+        <input type="text" id="buscarNombre" placeholder="Ej: arroz">
+    </div>
+    <button class="btn-agregar" onclick="buscarProducto()">Buscar</button>
+    <button class="btn-cancelar" onclick="limpiarBusqueda()">Ver todos</button>
+</div>
+        
+        
+        <div id="tabla-contenedor">Cargando productos...</div>
+    </div>
+    
+    <!-- Modal para editar -->
+    <div id="modalEditar" class="modal">
+        <div class="modal-contenido">
+            <div class="modal-titulo">✏️ Editar Producto</div>
+            <div class="form-grupo">
+                <div>
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="editNombre" placeholder="Nombre">
+                </div>
+                <div>
+                    <label>Stock (unidades)</label>
+                    <input type="number" id="editStock" placeholder="Stock" min="0">
+                </div>
+                <div>
+                    <label>Precio ($)</label>
+                    <input type="number" id="editPrecio" placeholder="Precio" min="0">
+                </div>
+            </div>
+            <div class="modal-botones">
+                <button class="btn-guardar" onclick="guardarEdicion()">Guardar Cambios</button>
+                <button class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+
+let productoEnEdicion = null;
+let productosGlobal = [];
+
+// 🔹 CARGAR PRODUCTOS
+function cargarProductos(nombre = '') {
+    const url = nombre ? `/api/productos?nombre=${nombre}` : '/api/productos';
+    
+    fetch(url)
+        .then(res => res.json())
+        .then(productos => {
+
+            productosGlobal = productos; // ✅ CORRECTO
+
+            const token = localStorage.getItem('token');
+
+            let tabla = '<table><thead><tr><th>Producto</th><th>Stock</th><th>Precio</th><th>Acciones</th></tr></thead><tbody>';
+
+            productos.forEach(p => {
+                tabla += `<tr>
+                    <td>${p.nombre}</td>
+                    <td>${p.stock} unidades</td>
+                    <td class="precio">$${p.precio}</td>
+                    <td class="acciones">`;
+
+                if (token) {
+                    tabla += `
+                        <button class="btn-editar" onclick="abrirModalEditar(${p.id})">Editar</button>
+                        <button class="btn-eliminar" onclick="eliminarProducto(${p.id})">Eliminar</button>
+                    `;
+                } else {
+                    tabla += `<span style="color:#999;">🔒 Login requerido</span>`;
+                }
+
+                tabla += `</td></tr>`;
+            });
+
+            tabla += '</tbody></table>';
+            document.getElementById('tabla-contenedor').innerHTML = tabla;
+        });
+}
+
+// 🔹 AGREGAR PRODUCTO
+function agregarProducto() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        mostrarMensaje('Debes iniciar sesión', 'error');
+        return;
+    }
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const stock = parseInt(document.getElementById('stock').value);
+    const precio = parseInt(document.getElementById('precio').value);
+
+    if (!nombre || isNaN(stock) || isNaN(precio)) {
+        mostrarMensaje('Completa todos los campos correctamente', 'error');
+        return;
+    }
+
+    fetch('/api/productos', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ nombre, stock, precio })
+    })
+    .then(res => {
+        if (!res.ok) {
+            return res.json().then(err => { throw new Error(err.error || 'Error al crear'); });
+        }
+        return res.json();
+    })
+    .then(() => {
+        mostrarMensaje('✅ Producto agregado', 'exito');
+
+        // limpiar inputs
+        document.getElementById('nombre').value = '';
+        document.getElementById('stock').value = '';
+        document.getElementById('precio').value = '';
+
+        cargarProductos();
+    })
+    .catch(err => mostrarMensaje(err.message, 'error'));
+}
+
+// 🔹 ABRIR MODAL EDITAR
+function abrirModalEditar(id) {
+    const producto = productosGlobal.find(p => p.id === id);
+
+    if (!producto) {
+        mostrarMensaje('Error al cargar producto', 'error');
+        return;
+    }
+
+    productoEnEdicion = id;
+
+    document.getElementById('editNombre').value = producto.nombre;
+    document.getElementById('editStock').value = producto.stock;
+    document.getElementById('editPrecio').value = producto.precio;
+
+    document.getElementById('modalEditar').classList.add('activo');
+}
+
+// 🔹 GUARDAR EDICIÓN (PUT)
+function guardarEdicion() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        mostrarMensaje('Debes iniciar sesión', 'error');
+        return;
+    }
+
+    const nombre = document.getElementById('editNombre').value.trim();
+    const stock = parseInt(document.getElementById('editStock').value);
+    const precio = parseInt(document.getElementById('editPrecio').value);
+
+    fetch(`/api/productos/${productoEnEdicion}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify({ nombre, stock, precio })
+    })
+    .then(res => {
+        if (!res.ok) {
+            return res.json().then(err => { throw new Error(err.error || 'Error al editar'); });
+        }
+        return res.json();
+    })
+    .then(() => {
+        mostrarMensaje('✅ Producto actualizado', 'exito');
+        cerrarModal();
+        cargarProductos();
+    })
+    .catch(err => mostrarMensaje(err.message, 'error'));
+}
+
+// 🔹 CERRAR MODAL
+function cerrarModal() {
+    document.getElementById('modalEditar').classList.remove('activo');
+}
+
+// 🔹 ELIMINAR
+function eliminarProducto(id) {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        mostrarMensaje('Debes iniciar sesión', 'error');
+        return;
+    }
+
+    if (!confirm('¿Eliminar producto?')) return;
+
+    fetch(`/api/productos/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    .then(res => {
+        if (!res.ok) {
+            return res.json().then(err => { throw new Error(err.error || 'Error al eliminar'); });
+        }
+        return res.json();
+    })
+    .then(() => {
+        mostrarMensaje('✅ Eliminado correctamente', 'exito');
+        cargarProductos();
+    })
+    .catch(err => mostrarMensaje('❌ ' + err.message, 'error'));
+}
+
+// 🔹 REGISTRO
+function registrarUsuario() {
+    const email = document.getElementById('userEmail').value.trim();
+    const password = document.getElementById('userPassword').value.trim();
+
+    if (!email || !password) {
+        mostrarMensaje('Completa email y contraseña', 'error');
+        return;
+    }
+
+    if (!email.includes('@')) {
+        mostrarMensaje('El email debe contener @', 'error');
+        return;
+    }
+
+    if (password.length < 4) {
+        mostrarMensaje('La contraseña debe tener al menos 4 caracteres', 'error');
+        return;
+    }
+
+    fetch('/users/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Error al registrar');
+        return res.json();
+    })
+    .then(() => {
+        mostrarMensaje('✅ Registro exitoso. Ahora puedes iniciar sesión', 'exito');
+        document.getElementById('userEmail').value = '';
+        document.getElementById('userPassword').value = '';
+    })
+    .catch(err => mostrarMensaje(err.message, 'error'));
+}
+
+// 🔐 LOGIN
+function login() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    fetch('/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Credenciales incorrectas');
+        return res.json();
+    })
+    .then(data => {
+        localStorage.setItem('token', data.token);
+        mostrarMensaje('✅ Login exitoso', 'exito');
+        actualizarUI();
+    })
+    .catch(err => mostrarMensaje(err.message, 'error'));
+}
+
+// 🔓 LOGOUT
+function logout() {
+    localStorage.removeItem('token');
+    mostrarMensaje('Sesión cerrada', 'exito');
+    actualizarUI();
+}
+
+// 🔹 UI
+function mostrarEstadoUsuario() {
+    const token = localStorage.getItem('token');
+    const contenedor = document.getElementById('estadoUsuario');
+
+    if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        contenedor.innerHTML = `🟢 ${payload.email}`;
+    } else {
+        contenedor.innerHTML = `🔴 No has iniciado sesión`;
+    }
+}
+
+function actualizarUI() {
+    const token = localStorage.getItem('token');
+
+    const formRegistro = document.querySelectorAll('.formulario-contenedor')[0];
+    const formLogin = document.querySelectorAll('.formulario-contenedor')[1];
+
+    document.getElementById('btnLogout').style.display = token ? 'block' : 'none';
+
+    formLogin.style.display = token ? 'none' : 'block';
+    formRegistro.style.display = token ? 'none' : 'block';
+
+    mostrarEstadoUsuario();
+    cargarProductos();
+}
+
+// 🔹 MENSAJES
+function mostrarMensaje(texto, tipo) {
+    const mensajeDiv = document.getElementById('mensaje');
+    mensajeDiv.innerHTML = `<div class="mensaje ${tipo}">${texto}</div>`;
+    setTimeout(() => mensajeDiv.innerHTML = '', 3000);
+}
+
+// 🔍 BUSCAR PRODUCTO
+function buscarProducto() {
+    const nombre = document.getElementById('buscarNombre').value.trim();
+    cargarProductos(nombre);
+}
+
+// 🔹 LIMPIAR BÚSQUEDA
+function limpiarBusqueda() {
+    document.getElementById('buscarNombre').value = '';
+    cargarProductos();
+}
+
+// INIT
+actualizarUI();
+
+</script>
+</body>
+</html>

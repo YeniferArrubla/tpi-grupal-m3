@@ -1,0 +1,26 @@
+[
+  {
+    "id": 2,
+    "nombre": "Fideos 500g",
+    "stock": 25,
+    "precio": 900
+  },
+  {
+    "id": 3,
+    "nombre": "Lentejas 500g",
+    "stock": 14,
+    "precio": 1100
+  },
+  {
+    "id": 4,
+    "nombre": "Chocolate",
+    "stock": 12,
+    "precio": 1500
+  },
+  {
+    "id": 5,
+    "nombre": "Arroz 500g",
+    "stock": 22,
+    "precio": 1000
+  }
+]
