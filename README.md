@@ -4,6 +4,10 @@ Aplicación backend desarrollada con Node.js y Express para la gestión de produ
 
 ---
 
+## 🌐 Demo
+
+https://tpi-grupal-m3.onrender.com/
+
 ## 🚀 Tecnologías utilizadas
 
 * Node.js
@@ -32,13 +36,23 @@ Aplicación backend desarrollada con Node.js y Express para la gestión de produ
 
 ---
 
+## ✨ Funcionalidades destacadas
+
+- Autenticación completa con JWT
+- CRUD de productos protegido
+- Búsqueda dinámica de productos
+- Interfaz web integrada
+- Persistencia en archivos JSON
+
+---
+
 ## 📦 Instalación
 
 1. Clonar el repositorio:
 
 ```bash
-git clone <URL_DEL_REPO>
-cd nombre-del-proyecto
+git clone <https://github.com/YeniferArrubla/tpi-grupal-m3>
+cd tpi-grupal-m3
 ```
 
 2. Instalar dependencias:
