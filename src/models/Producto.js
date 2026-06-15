@@ -15,10 +15,6 @@ const ProductoSchema = new mongoose.Schema({
         type: Number, 
         required: [true, 'El stock es obligatorio'],
         default: 0 
-    },
-    categoria: { 
-        type: String, 
-        required: [true, 'La categoría es obligatoria'] 
     }
 }, { 
     timestamps: true // Esto crea solo las fechas de cuándo se creó y actualizó el producto

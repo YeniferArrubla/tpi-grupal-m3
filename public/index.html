@@ -222,8 +222,8 @@ function cargarProductos(nombre = '') {
 
                 if (token) {
                     tabla += `
-                        <button class="btn-editar" onclick="abrirModalEditar(${p.id})">Editar</button>
-                        <button class="btn-eliminar" onclick="eliminarProducto(${p.id})">Eliminar</button>
+                        <button class="btn-editar" onclick="abrirModalEditar('${p._id}')">Editar</button>
+                        <button class="btn-eliminar" onclick="eliminarProducto('${p._id}')">Eliminar</button>
                     `;
                 } else {
                     tabla += `<span style="color:#999;">🔒 Login requerido</span>`;
@@ -284,7 +284,7 @@ function agregarProducto() {
 
 // 🔹 ABRIR MODAL EDITAR
 function abrirModalEditar(id) {
-    const producto = productosGlobal.find(p => p.id === id);
+    const producto = productosGlobal.find(p => p._id === id);
 
     if (!producto) {
         mostrarMensaje('Error al cargar producto', 'error');

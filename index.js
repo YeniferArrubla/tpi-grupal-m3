@@ -7,12 +7,11 @@ connectionDB()
 
 const inventarioRoutes = require("./src/routes/inventarioRoutes.js");
 const userRoutes = require('./src/routes/userRoutes');
-const productoRoutes = require('./routes/productoRoutes');
+
 app.use(express.json());
 app.use(express.static("public"));
 app.use("/api", inventarioRoutes);
 app.use('/users', userRoutes);
-app.use('/api/productos' , productoRoutes);
 app.use(errorHandler);
 
 //const PORT = 5000;
