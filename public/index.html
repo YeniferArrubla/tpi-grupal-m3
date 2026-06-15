@@ -422,9 +422,13 @@ function login() {
         return res.json();
     })
     .then(data => {
-        localStorage.setItem('token', data.token);
-        mostrarMensaje('✅ Login exitoso', 'exito');
-        actualizarUI();
+    localStorage.setItem('token', data.token);
+
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
+
+    mostrarMensaje('✅ Login exitoso', 'exito');
+    actualizarUI();
     })
     .catch(err => mostrarMensaje(err.message, 'error'));
 }
@@ -432,6 +436,11 @@ function login() {
 // 🔓 LOGOUT
 function logout() {
     localStorage.removeItem('token');
+
+    // Limpiar formulario de login
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
+
     mostrarMensaje('Sesión cerrada', 'exito');
     actualizarUI();
 }
