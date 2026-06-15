@@ -1,132 +1,181 @@
-# 🛒 API de Gestión de Inventario
+# 🛒 Sistema de Inventario con Autenticación JWT
 
-Aplicación backend desarrollada con Node.js y Express para la gestión de productos, que incluye autenticación de usuarios mediante JWT y una interfaz web básica.
+## Descripción del Proyecto
+
+Aplicación web desarrollada con Node.js, Express y MongoDB Atlas para la gestión de inventario de productos.
+
+El sistema permite:
+
+* Registro de usuarios.
+* Inicio y cierre de sesión mediante JWT.
+* Gestión completa de productos (CRUD).
+* Búsqueda de productos por nombre.
+* Protección de rutas mediante autenticación.
+* Despliegue en la nube utilizando Render.
 
 ---
 
-## 🌐 Demo
+## 🧠 Tecnologías Utilizadas
 
-https://tpi-grupal-m3.onrender.com/
-
-## 🚀 Tecnologías utilizadas
+### Backend
 
 * Node.js
-* Express
-* JSON como base de datos (persistencia local)
-* JWT (JSON Web Token) para autenticación
-* bcrypt para hash de contraseñas
-* dotenv para variables de entorno
+* Express.js
+* MongoDB Atlas
+* Mongoose
+* JSON Web Token (JWT)
+* bcrypt
+* express-rate-limit
+
+### Frontend
+
+* HTML5
+* CSS3
+* JavaScript (Fetch API)
+
+### Despliegue
+
+* Render
+* MongoDB Atlas
 
 ---
 
-## 📁 Estructura del proyecto
+## Funcionalidades
 
+### Usuarios
+
+#### Registro de usuario
+
+Permite crear nuevos usuarios almacenando la contraseña de forma segura mediante hashing con bcrypt.
+
+#### Inicio de sesión
+
+Genera un token JWT para acceder a las funcionalidades protegidas.
+
+#### Cierre de sesión
+
+Elimina el token almacenado en el navegador.
+
+---
+
+### Productos
+
+#### Crear producto
+
+Permite agregar nuevos productos al inventario.
+
+#### Consultar productos
+
+Muestra todos los productos almacenados.
+
+#### Buscar productos
+
+Permite filtrar productos por nombre.
+
+#### Actualizar productos
+
+Permite modificar nombre, stock y precio.
+
+#### Eliminar productos
+
+Permite eliminar productos existentes.
+
+---
+
+## 🛡️Seguridad Implementada
+
+### Hash de contraseñas
+
+Las contraseñas se almacenan utilizando bcrypt.
+
+### Autenticación JWT
+
+Las operaciones de creación, edición y eliminación de productos requieren un token válido.
+
+### Rate Limiting
+
+Se implementó protección contra ataques de fuerza bruta limitando la cantidad de solicitudes realizadas desde una misma IP.
+
+---
+
+## 📁 Estructura del Proyecto
+
+```plaintext
+├── models
+│   ├── Producto.js
+│
+├── public
+│   └── index.html
+│
+├── src
+│   ├── connection.js
+│   │
+│   ├── controllers
+│   │   ├── inventarioController.js
+│   │   └── userController.js
+│   │
+│   ├── middlewares
+│   │   ├── authMiddleware.js
+│   │   └── errorMiddleware.js
+│   │
+│   ├── models
+│   │   └── User.js
+│   │
+│   └── routes
+│       ├── inventarioRoutes.js
+│       └── userRoutes.js
+│
+├── .env
+├── index.js
+├── package.json
+└── README.md
 ```
-├── public/                # Frontend (index.html)
-├── src/
-│   ├── controllers/       # Lógica de negocio
-│   ├── models/            # Manejo de datos (JSON)
-│   ├── routes/            # Definición de rutas
-│   ├── middlewares/       # Autenticación y manejo de errores
-├── productos.json         # Base de datos de productos
-├── users.json             # Base de datos de usuarios
-├── index.js               # Punto de entrada
-├── .env                   # Variables de entorno
-```
 
 ---
 
-## ✨ Funcionalidades destacadas
+## Instalación
 
-- Autenticación completa con JWT
-- CRUD de productos protegido
-- Búsqueda dinámica de productos
-- Interfaz web integrada
-- Persistencia en archivos JSON
-
----
-
-## 📦 Instalación
-
-1. Clonar el repositorio:
+### Clonar repositorio
 
 ```bash
-git clone <https://github.com/YeniferArrubla/tpi-grupal-m3>
-cd tpi-grupal-m3
+git clone URL_DEL_REPOSITORIO
 ```
 
-2. Instalar dependencias:
+### Instalar dependencias
 
 ```bash
 npm install
 ```
 
----
-
-## ⚙️ Variables de entorno
-
-Crear un archivo `.env` en la raíz del proyecto:
+### Crear archivo .env
 
 ```env
 PORT=5000
-JWT_SECRET=tu_secreto_super_seguro
+JWT_SECRET=tu_clave_secreta
+MONGO_URI=tu_uri_de_mongodb_atlas
 ```
 
----
-
-## ▶️ Ejecutar el servidor
+### Ejecutar proyecto
 
 ```bash
-node index.js
+npm start
 ```
 
 Servidor disponible en:
 
-```
+```text
 http://localhost:5000
 ```
 
 ---
 
-## 🌐 Uso del frontend
+## Endpoints Disponibles
 
-Abrir en el navegador:
+### Usuarios
 
-```
-http://localhost:5000
-```
+#### Registrar usuario
 
-Desde la interfaz puedes:
-
-* Registrarte
-* Iniciar sesión
-* Agregar productos
-* Editar productos
-* Eliminar productos
-* Buscar productos
-
----
-
-## 🔐 Autenticación
-
-La API utiliza JWT para proteger rutas sensibles.
-
-### Flujo de uso:
-
-1. Registrar usuario
-2. Iniciar sesión
-3. Obtener token
-4. Enviar token en rutas protegidas
-
----
-
-## 📌 Endpoints
-
-### 👤 Usuarios
-
-#### 🔹 Registro
-
-```
+```http
 POST /users/register
 ```
 
@@ -134,58 +183,58 @@ Body:
 
 ```json
 {
-  "email": "test@test.com",
-  "password": "123456"
+  "email": "usuario@email.com",
+  "password": "1234"
 }
 ```
 
 ---
 
-#### 🔹 Login
+#### Iniciar sesión
 
-```
+```http
 POST /users/login
 ```
 
-Respuesta:
+Body:
 
 ```json
 {
-  "mensaje": "Login exitoso",
-  "token": "..."
+  "email": "usuario@email.com",
+  "password": "1234"
 }
 ```
 
 ---
 
-### 📦 Productos
+### Productos
 
-#### 🔹 Obtener todos los productos
+#### Obtener todos los productos
 
-```
+```http
 GET /api/productos
 ```
 
 ---
 
-#### 🔹 Buscar productos (no sensible a mayúsculas)
+#### Buscar productos
 
-```
+```http
 GET /api/productos?nombre=arroz
 ```
 
 ---
 
-#### 🔹 Crear producto (requiere token)
+#### Crear producto
 
-```
+```http
 POST /api/productos
 ```
 
 Headers:
 
-```
-Authorization: Bearer TU_TOKEN
+```text
+Authorization: Bearer TOKEN
 ```
 
 Body:
@@ -193,85 +242,102 @@ Body:
 ```json
 {
   "nombre": "Arroz",
-  "stock": 10,
-  "precio": 2000
+  "stock": 20,
+  "precio": 5000
 }
 ```
 
 ---
 
-#### 🔹 Actualizar producto (requiere token)
+#### Actualizar producto
 
-```
+```http
 PUT /api/productos/:id
 ```
 
+Headers:
+
+```text
+Authorization: Bearer TOKEN
+```
+
 ---
 
-#### 🔹 Eliminar producto (requiere token)
+#### Eliminar producto
 
-```
+```http
 DELETE /api/productos/:id
 ```
 
----
+Headers:
 
-## 🛡️ Seguridad
-
-* Contraseñas encriptadas con bcrypt
-* Autenticación mediante JWT
-* Middleware para proteger rutas
-* Uso de variables de entorno
+```text
+Authorization: Bearer TOKEN
+```
 
 ---
 
-## ⚠️ Manejo de errores
+## Base de Datos
 
-Middleware global para control de errores.
+Se utilizó MongoDB Atlas con dos colecciones principales:
 
-Ejemplo de respuesta:
+### users
 
 ```json
 {
-  "error": "Faltan campos requeridos"
+  "_id": "...",
+  "email": "usuario@email.com",
+  "password": "hash_bcrypt"
+}
+```
+
+### productos
+
+```json
+{
+  "_id": "...",
+  "nombre": "Arroz",
+  "stock": 20,
+  "precio": 5000
 }
 ```
 
 ---
 
-## 💾 Persistencia de datos
+## 🌐 Despliegue
 
-* Los datos se almacenan en archivos JSON
-* Persisten incluso después de reiniciar el servidor
+Aplicación desplegada en Render:
 
----
-
-## 🧠 Buenas prácticas implementadas
-
-* Arquitectura modular
-* Separación de responsabilidades
-* Uso de middlewares
-* Validaciones básicas
-* Manejo de errores centralizado
+https://tpi-grupal-m3.onrender.com
 
 ---
 
-## 🧪 Pruebas
+## 🧪 Pruebas Realizadas
 
-Puedes probar la API con:
+Se verificó correctamente:
 
-* Postman
-* O directamente desde el frontend
+* Registro de usuarios.
+* Inicio de sesión.
+* Generación de JWT.
+* Creación de productos.
+* Consulta de productos.
+* Búsqueda de productos.
+* Actualización de productos.
+* Eliminación de productos.
+* Funcionamiento local.
+* Funcionamiento desplegado en Render.
+* Persistencia de datos en MongoDB Atlas.
 
 ---
 
 ## 👩‍💻 Autoras
 
-Proyecto desarrollado como práctica del módulo 3 - Backend ADA:
 
 * Sofia Ruth Fischer
 * Jesica Noelia Merep
 * Isabel Perez
+* Aketzalli Alonso
 * Yennifer Arrubla
 
----
+
+Proyecto desarrollado como trabajo integrador para el módulo 4 de Desarrollo Backend.
