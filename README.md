@@ -101,9 +101,6 @@ Se implementó protección contra ataques de fuerza bruta limitando la cantidad 
 ## 📁 Estructura del Proyecto
 
 ```plaintext
-├── models
-│   ├── Producto.js
-│
 ├── public
 │   └── index.html
 │
@@ -119,6 +116,7 @@ Se implementó protección contra ataques de fuerza bruta limitando la cantidad 
 │   │   └── errorMiddleware.js
 │   │
 │   ├── models
+│   │   ├── Producto.js
 │   │   └── User.js
 │   │
 │   └── routes
@@ -126,8 +124,10 @@ Se implementó protección contra ataques de fuerza bruta limitando la cantidad 
 │       └── userRoutes.js
 │
 ├── .env
+├── .gitignore
 ├── index.js
 ├── package.json
+├── package-lock.json
 └── README.md
 ```
 
@@ -138,7 +138,7 @@ Se implementó protección contra ataques de fuerza bruta limitando la cantidad 
 ### Clonar repositorio
 
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/YeniferArrubla/tpi-grupal-m3.git
 ```
 
 ### Instalar dependencias
@@ -151,8 +151,8 @@ npm install
 
 ```env
 PORT=5000
-JWT_SECRET=tu_clave_secreta
-MONGO_URI=tu_uri_de_mongodb_atlas
+JWT_SECRET=tu_clave_secreta (solicitar clave)
+MONGO_URI=tu_uri_de_mongodb_atlas (solicitar creación usuario)
 ```
 
 ### Ejecutar proyecto
